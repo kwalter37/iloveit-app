@@ -33,4 +33,15 @@ class ILoveItTests: XCTestCase {
         }
     }
     
+    func testProductInit() {
+        let potentialProduct = Product(id: nil, name: "YuckyMush", category: "Pasta", rating: 1)
+        XCTAssertNotNil(potentialProduct)
+        
+        let emptyName = Product(id: nil, name: "", category: "Pasta", rating: 1)
+        XCTAssertNil(emptyName)
+        
+        let badRating = Product(id: nil, name: "", category: "Pasta", rating: -1)
+        XCTAssertNil(badRating)
+    }
+    
 }
