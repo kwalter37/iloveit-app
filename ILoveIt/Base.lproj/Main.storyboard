@@ -111,7 +111,7 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="A91-51-0SC" customClass="RatingControl" customModule="ILoveIt" customModuleProvider="target">
-                                <rect key="frame" x="20" y="207" width="240" height="20"/>
+                                <rect key="frame" x="20" y="207" width="240" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="r3H-cQ-zlj">
