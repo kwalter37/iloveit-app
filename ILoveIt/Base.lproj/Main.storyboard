@@ -135,7 +135,7 @@
                                             <constraint firstAttribute="height" constant="30" id="EKI-X6-2dV"/>
                                         </constraints>
                                     </stackView>
-                                    <view contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="A91-51-0SC" customClass="RatingControl" customModule="ILoveIt" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="A91-51-0SC" customClass="RatingControl" customModule="ILoveIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="126" width="560" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -158,6 +158,37 @@
                                     <constraint firstItem="A91-51-0SC" firstAttribute="top" secondItem="FN5-fS-stU" secondAttribute="bottom" constant="12" id="yxP-aY-PIy"/>
                                 </constraints>
                             </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="20" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mrf-kz-gPY">
+                                <rect key="frame" x="70" y="236" width="240" height="97"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AutoCompleteRowIdentifier" textLabel="dCW-vK-kvZ" style="IBUITableViewCellStyleDefault" id="RkI-q5-GkP">
+                                        <rect key="frame" x="0.0" y="28" width="240" height="20"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RkI-q5-GkP" id="LcX-lw-aLh">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dCW-vK-kvZ">
+                                                    <rect key="frame" x="15" y="0.0" width="210" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -179,6 +210,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="autocompleteTableView" destination="mrf-kz-gPY" id="3Wu-h3-YPO"/>
                         <outlet property="brandTextField" destination="S2G-Fe-pOk" id="KFK-We-3sa"/>
                         <outlet property="catTextField" destination="mlo-Vj-FgW" id="dme-vB-YWB"/>
                         <outlet property="ratingControl" destination="A91-51-0SC" id="pgz-il-k1r"/>
