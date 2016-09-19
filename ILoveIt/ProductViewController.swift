@@ -24,6 +24,11 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
     var existingCategories = ["Pasta", "Pasta Sauce", "Crackers"]
     var autocompleteCategories = [String]()
     
+    // needed a set otherwise did not change when run on real iPhone 5 at least
+    func setProduct(product: Product) {
+        self.product = product
+    }
+    
     // MARK: Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender === saveButton {

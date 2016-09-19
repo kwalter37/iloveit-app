@@ -152,7 +152,7 @@ class ProductTableViewController: UITableViewController {
             if let selectedProductCell = sender as? ProductTableViewCell {
                 let indexPath = tableView.indexPathForCell(selectedProductCell)!
                 let selectedProduct = products[indexPath.row]
-                productDetailViewController.product = selectedProduct
+                productDetailViewController.setProduct(selectedProduct)
             }
         }
         else if segue.identifier == "AddItem" {
