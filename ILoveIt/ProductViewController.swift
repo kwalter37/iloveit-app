@@ -36,8 +36,18 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
             let brand = brandTextField.text ?? ""
             let cat = catTextField.text ?? ""
             let rating = ratingControl.rating ?? 0
-
-            product = Product(id: nil, name: name, brand: brand, category: cat, rating: rating)
+            
+            if product == nil {
+                // create a new product
+                product = Product(id: nil, name: name, brand: brand, category: cat, rating: rating)
+            }
+            else {
+                // existing product (make sure to preserve id)
+                product!.name = name
+                product!.brand = brand
+                product!.category = cat
+                product!.rating = rating
+            }
         }
     }
     
@@ -74,8 +84,10 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
     
     func textFieldDidEndEditing(textField: UITextField) {
         checkValidProductValues()
-        navigationItem.title = textField.text
         autocompleteTableView.hidden = true
+        if textField == searchTextField {
+            navigationItem.title = textField.text
+        }
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
