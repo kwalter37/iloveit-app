@@ -14,7 +14,7 @@ class RatingControl: UIView {
     
     var rating = 0
     var ratingButtons = [UIButton]()
-    let spacing = 5
+    var spacing = 5
     let starCount = 5
     
     // MARK: Initialization

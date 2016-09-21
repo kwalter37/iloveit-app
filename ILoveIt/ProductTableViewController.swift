@@ -80,8 +80,8 @@ class ProductTableViewController: UITableViewController {
         
         let product = products[indexPath.row]
 
-        cell.nameLabel.text = product.name
-        cell.ratingLabel.text = String(product.rating)
+        cell.nameLabel.text = product.brand + " - " + product.name
+        cell.ratingControl.rating = product.rating
 
         return cell
     }
