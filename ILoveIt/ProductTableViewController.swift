@@ -8,11 +8,15 @@
 
 import UIKit
 
-class ProductTableViewController: UITableViewController {
+class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
     
     // MARK: Properties
     var products = [Product]()
+    // TODO: make as a filter struct
+    var catFilter: String?
 
+    @IBOutlet weak var categoryTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,6 +25,8 @@ class ProductTableViewController: UITableViewController {
 
         // UDisplay an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        
+        categoryTextField.delegate = self;
         
         loadServerProducts()
     }
@@ -32,11 +38,12 @@ class ProductTableViewController: UITableViewController {
     
     func loadServerProducts() {
         //load up with a dummy row
+        products.removeAll(keepCapacity: false)
         products.append(Product(id: nil, name: "loading...", brand: "", category: "", rating: 0)!)
         
         let productWebService = ProductWebService()
         
-        productWebService.getProducts({
+        productWebService.getProducts(catFilter, success: {
             (products: [[String: AnyObject]]) -> Void in
             self.products.removeAll()
             for product in products {
@@ -125,6 +132,31 @@ class ProductTableViewController: UITableViewController {
         return true
     }
     */
+    
+    // MARK: UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        // Disable the Save button while editing.
+        print("here")
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        //autocompleteTableView.hidden = true
+        if textField == categoryTextField {
+            if let catString = categoryTextField.text {
+                catFilter = catString
+            }
+            else {
+                catFilter = nil
+            }
+            loadServerProducts()
+        }
+    }
+    
 
     // MARK: - Navigation
 

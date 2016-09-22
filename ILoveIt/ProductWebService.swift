@@ -15,8 +15,13 @@ class ProductWebService {
     // MARK: List Related
     
     // TODO: Add filters
-    func getProducts(success: (products: [[String: AnyObject]]) -> Void) {
-        let requestURL: NSURL = NSURL(string: baseUrl + "/products")!
+    func getProducts(filter: String?, success: (products: [[String: AnyObject]]) -> Void) {
+        var catFilterStr = ""
+        if let catFilter = filter where !catFilter.isEmpty {
+            catFilterStr += "?category=" + catFilter.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!
+        }
+        let requestURL: NSURL = NSURL(string: baseUrl + "/products" + catFilterStr)!
+        
         let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(urlRequest) {
