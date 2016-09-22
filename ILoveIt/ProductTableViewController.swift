@@ -14,10 +14,12 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
     var products = [Product]()
     // TODO: make as a filter struct
     var catFilter: String?
-
+    
+    @IBOutlet weak var busyIndicator: UIActivityIndicatorView!
     @IBOutlet weak var categoryTextField: UITextField!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
@@ -37,20 +39,25 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
     }
     
     func loadServerProducts() {
-        //load up with a dummy row
+        // show as busy
+        busyIndicator.startAnimating()
         products.removeAll(keepCapacity: false)
-        products.append(Product(id: nil, name: "loading...", brand: "", category: "", rating: 0)!)
         
+        // go get the products
         let productWebService = ProductWebService()
-        
         productWebService.getProducts(catFilter, success: {
             (products: [[String: AnyObject]]) -> Void in
-            self.products.removeAll()
-            for product in products {
-                self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!, brand: (product["brand"] as? String)!, category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!)!)
+            //go back into UI thread to update table
+            dispatch_async(dispatch_get_main_queue()) {
+                
+                for product in products {
+                    self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!, brand: (product["brand"] as? String)!, category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!)!)
+                }
+                print(self.products)
+                self.busyIndicator.stopAnimating()
+                self.doTableRefresh()
             }
-            print(self.products)
-            self.doTableRefresh()
+            
         })
         
     }
@@ -88,7 +95,7 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
         let product = products[indexPath.row]
 
         cell.nameLabel.text = product.brand + " - " + product.name
-        cell.ratingControl.rating = product.rating
+        cell.ratingControl.setInitRating(product.rating)
 
         return cell
     }

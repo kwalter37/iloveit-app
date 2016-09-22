@@ -72,5 +72,10 @@ class RatingControl: UIView {
         // Drawing code
     }
     */
+    
+    func setInitRating(rating: Int) {
+        self.rating = rating
+        updateButtonSelectionStates()
+    }
 
 }
