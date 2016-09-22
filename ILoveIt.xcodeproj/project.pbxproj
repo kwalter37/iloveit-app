@@ -19,6 +19,7 @@
 		30307DC61D82058000A173A3 /* ProductTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30307DC51D82058000A173A3 /* ProductTableViewController.swift */; };
 		30307DC81D887B0100A173A3 /* RatingControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30307DC71D887B0100A173A3 /* RatingControl.swift */; };
 		307C9EC11D90969E0078EBEC /* ProductWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307C9EC01D90969E0078EBEC /* ProductWebService.swift */; };
+		307C9EC31D9481100078EBEC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307C9EC21D9481100078EBEC /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		30307DC51D82058000A173A3 /* ProductTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductTableViewController.swift; sourceTree = "<group>"; };
 		30307DC71D887B0100A173A3 /* RatingControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingControl.swift; sourceTree = "<group>"; };
 		307C9EC01D90969E0078EBEC /* ProductWebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductWebService.swift; sourceTree = "<group>"; };
+		307C9EC21D9481100078EBEC /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				30307DA71D7F64CD00A173A3 /* Assets.xcassets */,
 				30307DA91D7F64CD00A173A3 /* LaunchScreen.storyboard */,
 				30307DAC1D7F64CD00A173A3 /* Info.plist */,
+				307C9EC21D9481100078EBEC /* Utils.swift */,
 			);
 			path = ILoveIt;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				30307DC81D887B0100A173A3 /* RatingControl.swift in Sources */,
 				307C9EC11D90969E0078EBEC /* ProductWebService.swift in Sources */,
 				30307DC61D82058000A173A3 /* ProductTableViewController.swift in Sources */,
+				307C9EC31D9481100078EBEC /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -51,7 +51,7 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
             dispatch_async(dispatch_get_main_queue()) {
                 
                 for product in products {
-                    self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!, brand: (product["brand"] as? String)!, category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!)!)
+                    self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!.unencode(), brand: (product["brand"] as? String)!.unencode(), category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!)!)
                 }
                 print(self.products)
                 self.busyIndicator.stopAnimating()

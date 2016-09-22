@@ -39,13 +39,13 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
             
             if product == nil {
                 // create a new product
-                product = Product(id: nil, name: name, brand: brand, category: cat, rating: rating)
+                product = Product(id: nil, name: name.trim(), brand: brand.trim(), category: cat.trim(), rating: rating)
             }
             else {
                 // existing product (make sure to preserve id)
-                product!.name = name
-                product!.brand = brand
-                product!.category = cat
+                product!.name = name.trim()
+                product!.brand = brand.trim()
+                product!.category = cat.trim()
                 product!.rating = rating
             }
         }

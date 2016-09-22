@@ -168,7 +168,7 @@ class ProductWebService {
     
     // TODO: Maybe can make a map or something
     func convertProductToDict(product: Product) -> AnyObject {
-        return ["name": product.name, "brand": product.brand, "category": product.category, "rating": product.rating]
+        return ["name": product.name.encode(), "brand": product.brand.encode(), "category": product.category, "rating": product.rating]
     }
 
     
