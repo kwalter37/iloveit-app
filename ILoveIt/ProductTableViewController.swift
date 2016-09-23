@@ -8,12 +8,15 @@
 
 import UIKit
 
-class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
+class ProductTableViewController: UITableViewController,  UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     // MARK: Properties
     var products = [Product]()
     // TODO: make as a filter struct
     var catFilter: String?
+    
+    // TODO; Get from DB
+    var existingCategories = ["All", "Pasta", "Pasta Sauce", "Crackers", "Bars"]
     
     @IBOutlet weak var busyIndicator: UIActivityIndicatorView!
     @IBOutlet weak var categoryTextField: UITextField!
@@ -28,9 +31,32 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
         // UDisplay an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         
+        //we will add a picker for the category search
+        let catPickerView = UIPickerView()
+        //pickerview tool bar
+        let toolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 44))
+        var items = [UIBarButtonItem]()
+        //making done button
+        //let doneButton = UIBarButtonItem(title: "Go", style: .Plain, target: self, action: Selector(donePressed()))
+        let flexButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Go", style: .Plain, target: self, action: #selector(ProductTableViewController.executeFilter))
+        items.append(flexButton)
+        items.append(doneButton)
+        //toolbar.barStyle = UIBarStyle.Black
+        toolbar.setItems(items, animated: true)
+        
+        
+        catPickerView.delegate = self
+        categoryTextField.inputAccessoryView = toolbar
+        categoryTextField.inputView = catPickerView
+        
         categoryTextField.delegate = self;
         
         loadServerProducts()
+    }
+    
+    func executeFilter() {
+        categoryTextField.endEditing(true)
     }
     
     func loadSampleProducts() {
@@ -162,6 +188,28 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate {
             }
             loadServerProducts()
         }
+    }
+    
+    // MARK: UIPickerViewDelegate
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return existingCategories.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return existingCategories[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        var selectedCategory = ""
+        if existingCategories[row] != "All" {
+            selectedCategory = existingCategories[row]
+        }
+        categoryTextField.text = selectedCategory
+        //categoryTextField.endEditing(true)
     }
     
 
