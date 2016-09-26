@@ -16,7 +16,7 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     var catFilter: String?
     
     // TODO; Get from DB
-    var existingCategories = ["All", "Pasta", "Pasta Sauce", "Crackers", "Bars"]
+    var existingCategories = ["All"]
     
     @IBOutlet weak var busyIndicator: UIActivityIndicatorView!
     @IBOutlet weak var categoryTextField: UITextField!
@@ -84,6 +84,16 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
                 self.doTableRefresh()
             }
             
+        })
+        
+        productWebService.getCategories({
+            (categories: [String]) -> Void in
+            //self.existingCategories.removeAll(keepCapacity: false)
+            self.existingCategories = ["All"]
+            for category in categories {
+                self.existingCategories.append(category)
+            }
+            print(self.products)
         })
         
     }
@@ -224,6 +234,7 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
                 let indexPath = tableView.indexPathForCell(selectedProductCell)!
                 let selectedProduct = products[indexPath.row]
                 productDetailViewController.setProduct(selectedProduct)
+                productDetailViewController.setCategories(self.existingCategories)
             }
         }
         else if segue.identifier == "AddItem" {

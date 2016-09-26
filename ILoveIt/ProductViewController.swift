@@ -21,12 +21,16 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
     var product: Product?
     
     // for auto-complete of category
-    var existingCategories = ["Pasta", "Pasta Sauce", "Crackers"]
+    var existingCategories = ["DidnLoad"]
     var autocompleteCategories = [String]()
     
     // needed a set otherwise did not change when run on real iPhone 5 at least
     func setProduct(product: Product) {
         self.product = product
+    }
+    
+    func setCategories(categories: [String]) {
+        self.existingCategories = categories
     }
     
     // MARK: Navigation

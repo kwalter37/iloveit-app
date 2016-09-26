@@ -51,6 +51,41 @@ class ProductWebService {
 
     }
     
+    // TODO: Add filters
+    func getCategories(success: (categories: [String]) -> Void) {
+        
+        let requestURL: NSURL = NSURL(string: baseUrl + "/categories")!
+        
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(urlRequest) {
+            (data, response, error) -> Void in
+            
+            let httpResponse = response as! NSHTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            if (statusCode == 200) {
+                print("Everyone is fine, file downloaded successfully.")
+                print(httpResponse)
+                
+                do {
+                    
+                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    
+                    if let categories = json as? [String] {
+                        success(categories: categories)
+                        print(categories)
+                    }
+                } catch {
+                    print("Error with Json: \(error)")
+                }
+            }
+        }
+        
+        task.resume()
+        
+    }
+    
     // MARK: CRUD
     
     // CREATE
