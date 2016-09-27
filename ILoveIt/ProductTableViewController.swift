@@ -238,6 +238,10 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
             }
         }
         else if segue.identifier == "AddItem" {
+            // we have a modal so a nav controller sits between us and the view controller
+            let productDetailNavController = segue.destinationViewController as! UINavigationController
+            let productDetailViewController = productDetailNavController.topViewController as! ProductViewController
+            productDetailViewController.setCategories(self.existingCategories)
         }
     }
     

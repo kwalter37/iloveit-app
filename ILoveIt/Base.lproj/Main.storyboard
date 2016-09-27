@@ -87,7 +87,7 @@
                     <navigationItem key="navigationItem" title="Your Products" id="J1Q-u0-XRu">
                         <barButtonItem key="rightBarButtonItem" title="+" id="oYk-zN-xPy">
                             <connections>
-                                <segue destination="n8h-rL-pR6" kind="presentation" id="kqL-Mn-kSr"/>
+                                <segue destination="n8h-rL-pR6" kind="presentation" identifier="AddItem" id="kqL-Mn-kSr"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
