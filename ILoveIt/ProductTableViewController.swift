@@ -60,8 +60,8 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     }
     
     func loadSampleProducts() {
-        products.append(Product(id: nil, name: "test1", brand: "Brand X", category: "cat1", rating: 2)!)
-        products.append(Product(id: nil, name: "test2", brand: "Brand Y", category: "cat1", rating: 8)!)
+        products.append(Product(id: nil, name: "test1", brand: "Brand X", category: "cat1", rating: 2, comments: "")!)
+        products.append(Product(id: nil, name: "test2", brand: "Brand Y", category: "cat1", rating: 8, comments: "")!)
     }
     
     func loadServerProducts() {
@@ -77,7 +77,7 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
             dispatch_async(dispatch_get_main_queue()) {
                 
                 for product in products {
-                    self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!.unencode(), brand: (product["brand"] as? String)!.unencode(), category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!)!)
+                    self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!.unencode(), brand: (product["brand"] as? String)!.unencode(), category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!, comments: (product["comments"] as? String))!)
                 }
                 print(self.products)
                 self.busyIndicator.stopAnimating()

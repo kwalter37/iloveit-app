@@ -51,7 +51,7 @@ class ProductWebService {
 
     }
     
-    // TODO: Add filters
+    // gets all current categories
     func getCategories(success: (categories: [String]) -> Void) {
         
         let requestURL: NSURL = NSURL(string: baseUrl + "/categories")!
@@ -203,7 +203,8 @@ class ProductWebService {
     
     // TODO: Maybe can make a map or something
     func convertProductToDict(product: Product) -> AnyObject {
-        return ["name": product.name.encode(), "brand": product.brand.encode(), "category": product.category, "rating": product.rating]
+        let optComments = product.comments ?? ""
+        return ["name": product.name.encode(), "brand": product.brand.encode(), "category": product.category, "rating": product.rating, "comments": optComments]
     }
 
     

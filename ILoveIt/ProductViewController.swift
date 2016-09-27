@@ -16,6 +16,7 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
     @IBOutlet weak var catTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var ratingControl: RatingControl!
+    @IBOutlet weak var commentsTextView: UITextView!
     @IBOutlet weak var autocompleteTableView: UITableView!
     
     var product: Product?
@@ -40,10 +41,11 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
             let brand = brandTextField.text ?? ""
             let cat = catTextField.text ?? ""
             let rating = ratingControl.rating ?? 0
+            let comments = commentsTextView.text ?? ""
             
             if product == nil {
                 // create a new product
-                product = Product(id: nil, name: name.trim(), brand: brand.trim(), category: cat.trim(), rating: rating)
+                product = Product(id: nil, name: name.trim(), brand: brand.trim(), category: cat.trim(), rating: rating, comments: comments)
             }
             else {
                 // existing product (make sure to preserve id)
@@ -51,6 +53,7 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
                 product!.brand = brand.trim()
                 product!.category = cat.trim()
                 product!.rating = rating
+                product!.comments = comments
             }
         }
     }
@@ -135,6 +138,7 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
             brandTextField.text = product.brand
             catTextField.text = product.category
             ratingControl.rating = product.rating
+            commentsTextView.text = product.comments ?? ""
         }
         
         // Enable the Save button only if the text field has a valid Meal name.
