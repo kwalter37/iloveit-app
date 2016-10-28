@@ -29,17 +29,17 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
         // self.clearsSelectionOnViewWillAppear = false
 
         // UDisplay an Edit button in the navigation bar for this view controller.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         
         //we will add a picker for the category search
         let catPickerView = UIPickerView()
         //pickerview tool bar
-        let toolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 44))
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
         var items = [UIBarButtonItem]()
         //making done button
         //let doneButton = UIBarButtonItem(title: "Go", style: .Plain, target: self, action: Selector(donePressed()))
-        let flexButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Go", style: .Plain, target: self, action: #selector(ProductTableViewController.executeFilter))
+        let flexButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Go", style: .plain, target: self, action: #selector(ProductTableViewController.executeFilter))
         items.append(flexButton)
         items.append(doneButton)
         //toolbar.barStyle = UIBarStyle.Black
@@ -67,14 +67,14 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     func loadServerProducts() {
         // show as busy
         busyIndicator.startAnimating()
-        products.removeAll(keepCapacity: false)
+        products.removeAll(keepingCapacity: false)
         
         // go get the products
         let productWebService = ProductWebService()
         productWebService.getProducts(catFilter, success: {
             (products: [[String: AnyObject]]) -> Void in
             //go back into UI thread to update table
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 
                 for product in products {
                     self.products.append(Product(id: (product["_id"] as? String)!, name: (product["name"] as? String)!.unencode(), brand: (product["brand"] as? String)!.unencode(), category: (product["category"] as? String)!, rating: (product["rating"]as? Int)!, comments: (product["comments"] as? String))!)
@@ -100,7 +100,7 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     
     // refresh in main thread
     func doTableRefresh() {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
             return
         })
@@ -113,22 +113,22 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "ProductTableViewCell"
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! ProductTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProductTableViewCell
         
-        let product = products[indexPath.row]
+        let product = products[(indexPath as NSIndexPath).row]
 
         cell.nameLabel.text = product.brand + " - " + product.name
         cell.ratingControl.setInitRating(product.rating)
@@ -145,18 +145,18 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     */
 
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .Delete {
-            let product = products[indexPath.row]
-            products.removeAtIndex(indexPath.row)
+        if editingStyle == .delete {
+            let product = products[(indexPath as NSIndexPath).row]
+            products.remove(at: (indexPath as NSIndexPath).row)
             // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
             // Delete from db
             let productWebService = ProductWebService()
             productWebService.deleteProduct(product)
             
-        } else if editingStyle == .Insert {
+        } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
@@ -177,17 +177,17 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     */
     
     // MARK: UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         // Disable the Save button while editing.
         print("here")
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         //autocompleteTableView.hidden = true
         if textField == categoryTextField {
             if let catString = categoryTextField.text {
@@ -201,19 +201,19 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     }
     
     // MARK: UIPickerViewDelegate
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return existingCategories.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return existingCategories[row]
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         var selectedCategory = ""
         if existingCategories[row] != "All" {
             selectedCategory = existingCategories[row]
@@ -226,41 +226,41 @@ class ProductTableViewController: UITableViewController,  UITextFieldDelegate, U
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowDetail" {
-            let productDetailViewController = segue.destinationViewController as! ProductViewController
+            let productDetailViewController = segue.destination as! ProductViewController
             // Get the cell that generated this segue.
             if let selectedProductCell = sender as? ProductTableViewCell {
-                let indexPath = tableView.indexPathForCell(selectedProductCell)!
-                let selectedProduct = products[indexPath.row]
+                let indexPath = tableView.indexPath(for: selectedProductCell)!
+                let selectedProduct = products[(indexPath as NSIndexPath).row]
                 productDetailViewController.setProduct(selectedProduct)
                 productDetailViewController.setCategories(self.existingCategories)
             }
         }
         else if segue.identifier == "AddItem" {
             // we have a modal so a nav controller sits between us and the view controller
-            let productDetailNavController = segue.destinationViewController as! UINavigationController
+            let productDetailNavController = segue.destination as! UINavigationController
             let productDetailViewController = productDetailNavController.topViewController as! ProductViewController
             productDetailViewController.setCategories(self.existingCategories)
         }
     }
     
-    @IBAction func unwindToProductList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.sourceViewController as? ProductViewController, product = sourceViewController.product {
+    @IBAction func unwindToProductList(_ sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? ProductViewController, let product = sourceViewController.product {
             
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // Edit an existing product
-                products[selectedIndexPath.row] = product
-                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+                products[(selectedIndexPath as NSIndexPath).row] = product
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
                 // Persist
                 let productWebService = ProductWebService()
                 productWebService.updateProduct(product)
             }
             else {
                 // Add a new product
-                let newIndexPath = NSIndexPath(forRow: products.count, inSection: 0)
+                let newIndexPath = IndexPath(row: products.count, section: 0)
                 products.append(product)
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                tableView.insertRows(at: [newIndexPath], with: .bottom)
                 // Persist
                 let productWebService = ProductWebService()
                 productWebService.createProduct(product)

@@ -166,9 +166,11 @@
 					30307D9C1D7F64CD00A173A3 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = E3RH8RBLFU;
+						LastSwiftMigration = 0800;
 					};
 					30307DB01D7F64CD00A173A3 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 30307D9C1D7F64CD00A173A3;
 					};
 				};
@@ -363,6 +365,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.klaw.ILoveIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -377,6 +380,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.klaw.ILoveIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -388,6 +392,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.klaw.ILoveItTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ILoveIt.app/ILoveIt";
 			};
 			name = Debug;
@@ -400,6 +405,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.klaw.ILoveItTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ILoveIt.app/ILoveIt";
 			};
 			name = Release;

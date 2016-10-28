@@ -15,19 +15,19 @@ class ProductWebService {
     // MARK: List Related
     
     // TODO: Add filters
-    func getProducts(filter: String?, success: (products: [[String: AnyObject]]) -> Void) {
+    func getProducts(_ filter: String?, success: @escaping (_ products: [[String: AnyObject]]) -> Void) {
         var catFilterStr = ""
-        if let catFilter = filter where !catFilter.isEmpty {
-            catFilterStr += "?category=" + catFilter.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!
+        if let catFilter = filter , !catFilter.isEmpty {
+            catFilterStr += "?category=" + catFilter.encode()
         }
-        let requestURL: NSURL = NSURL(string: baseUrl + "/products" + catFilterStr)!
+        let requestURL: URL = URL(string: baseUrl + "/products" + catFilterStr)!
         
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) {
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! NSHTTPURLResponse
+            let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 200) {
@@ -36,32 +36,32 @@ class ProductWebService {
                 
                 do {
                     
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
                     
                     if let products = json as? [[String: AnyObject]] {
-                        success(products: products)
+                        success(products)
                     }
                 } catch {
                     print("Error with Json: \(error)")
                 }
             }
-        }
+        }) 
         
         task.resume()
 
     }
     
     // gets all current categories
-    func getCategories(success: (categories: [String]) -> Void) {
+    func getCategories(_ success: @escaping (_ categories: [String]) -> Void) {
         
-        let requestURL: NSURL = NSURL(string: baseUrl + "/categories")!
+        let requestURL: URL = URL(string: baseUrl + "/categories")!
         
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) {
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! NSHTTPURLResponse
+            let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 200) {
@@ -70,17 +70,17 @@ class ProductWebService {
                 
                 do {
                     
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
                     
                     if let categories = json as? [String] {
-                        success(categories: categories)
+                        success(categories)
                         print(categories)
                     }
                 } catch {
                     print("Error with Json: \(error)")
                 }
             }
-        }
+        }) 
         
         task.resume()
         
@@ -90,23 +90,23 @@ class ProductWebService {
     
     // CREATE
     // TODO: Add success/fail
-    func createProduct(product: Product /*, success: () -> Void*/) {
-        let requestURL: NSURL = NSURL(string: baseUrl + "/products")!
+    func createProduct(_ product: Product /*, success: () -> Void*/) {
+        let requestURL: URL = URL(string: baseUrl + "/products")!
         let productDic = convertProductToDict(product)
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL)
         do {
-            let serializedData = try NSJSONSerialization.dataWithJSONObject(productDic, options:.PrettyPrinted) as NSData?
+            let serializedData = try JSONSerialization.data(withJSONObject: productDic, options:.prettyPrinted) as Data?
             
-            urlRequest.HTTPMethod = "POST"
-            urlRequest.HTTPBody = serializedData
+            urlRequest.httpMethod = "POST"
+            urlRequest.httpBody = serializedData
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlRequest.setValue("\(serializedData!.length)", forHTTPHeaderField: "Content-Length")
+            urlRequest.setValue("\(serializedData!.count)", forHTTPHeaderField: "Content-Length")
         
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(urlRequest) {
+            let session = URLSession.shared
+            let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
                 (data, response, error) -> Void in
                 
-                let httpResponse = response as! NSHTTPURLResponse
+                let httpResponse = response as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 
                 if (statusCode == 201) {
@@ -117,7 +117,7 @@ class ProductWebService {
                 else {
                     print("crap")
                 }
-            }
+            }) 
         
             task.resume()
  
@@ -129,27 +129,27 @@ class ProductWebService {
     
     // UPDATE
     // TODO: Can at least share code with update (just diff url, method, return code, msg)
-    func updateProduct(product: Product /*, success: () -> Void*/) {
+    func updateProduct(_ product: Product /*, success: () -> Void*/) {
         if product.id == nil {
             print("no id so could not update")
             return
         }
-        let requestURL: NSURL = NSURL(string: baseUrl + "/products" + "/" + product.id!)!
+        let requestURL: URL = URL(string: baseUrl + "/products" + "/" + product.id!)!
         let productDic = convertProductToDict(product)
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL)
         do {
-            let serializedData = try NSJSONSerialization.dataWithJSONObject(productDic, options:.PrettyPrinted) as NSData?
+            let serializedData = try JSONSerialization.data(withJSONObject: productDic, options:.prettyPrinted) as Data?
             
-            urlRequest.HTTPMethod = "PUT"
-            urlRequest.HTTPBody = serializedData
+            urlRequest.httpMethod = "PUT"
+            urlRequest.httpBody = serializedData
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlRequest.setValue("\(serializedData!.length)", forHTTPHeaderField: "Content-Length")
+            urlRequest.setValue("\(serializedData!.count)", forHTTPHeaderField: "Content-Length")
             
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(urlRequest) {
+            let session = URLSession.shared
+            let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
                 (data, response, error) -> Void in
                 
-                let httpResponse = response as! NSHTTPURLResponse
+                let httpResponse = response as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 
                 if (statusCode == 204) {
@@ -160,7 +160,7 @@ class ProductWebService {
                 else {
                     print("Oh crap...service error")
                 }
-            }
+            }) 
             
             task.resume()
             
@@ -172,18 +172,18 @@ class ProductWebService {
     
     // DELETE
     // TODO: Add success/fail
-    func deleteProduct (product: Product) {
+    func deleteProduct (_ product: Product) {
         // TODO: Add auth code
-        let requestURL: NSURL = NSURL(string: baseUrl + "/products" + "/" + product.id!)!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        urlRequest.HTTPMethod = "DELETE"
+        let requestURL: URL = URL(string: baseUrl + "/products" + "/" + product.id!)!
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL)
+        urlRequest.httpMethod = "DELETE"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) {
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! NSHTTPURLResponse
+            let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 204) {
@@ -194,7 +194,7 @@ class ProductWebService {
             else {
                 print("Oh crap...service error")
             }
-        }
+        }) 
         
         task.resume()
     }
@@ -202,9 +202,9 @@ class ProductWebService {
     // MARK: utilities
     
     // TODO: Maybe can make a map or something
-    func convertProductToDict(product: Product) -> AnyObject {
+    func convertProductToDict(_ product: Product) -> AnyObject {
         let optComments = product.comments ?? ""
-        return ["name": product.name.encode(), "brand": product.brand.encode(), "category": product.category, "rating": product.rating, "comments": optComments]
+        return ["name": product.name.encode(), "brand": product.brand.encode(), "category": product.category, "rating": product.rating, "comments": optComments] as AnyObject
     }
 
     

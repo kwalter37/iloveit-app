@@ -12,12 +12,12 @@ import Foundation
 extension String
 {
     func encode() -> String {
-        return self.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!
+        return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
     }
     func unencode() -> String {
-        return self.stringByRemovingPercentEncoding!
+        return self.removingPercentEncoding!
     }
     func trim() -> String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
 }

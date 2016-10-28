@@ -27,12 +27,12 @@ class RatingControl: UIView {
         
         for _ in 0..<starCount {
             let button = UIButton()
-            button.setImage(emptyStarImage, forState: .Normal)
-            button.setImage(filledStarImage, forState: .Selected)
-            button.setImage(filledStarImage, forState: [.Highlighted, .Selected])
+            button.setImage(emptyStarImage, for: UIControlState())
+            button.setImage(filledStarImage, for: .selected)
+            button.setImage(filledStarImage, for: [.highlighted, .selected])
             button.adjustsImageWhenHighlighted = false
             addSubview(button)
-            button.addTarget(self, action: #selector(RatingControl.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
+            button.addTarget(self, action: #selector(RatingControl.ratingButtonTapped(_:)), for: .touchDown)
             ratingButtons += [button]
         }
     }
@@ -42,7 +42,7 @@ class RatingControl: UIView {
         var buttonFrame = CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize)
         
         // Offset each button's origin by the length of the button plus spacing.
-        for (index, button) in ratingButtons.enumerate() {
+        for (index, button) in ratingButtons.enumerated() {
             buttonFrame.origin.x = CGFloat(index * (buttonSize + spacing))
             button.frame = buttonFrame
         }
@@ -52,16 +52,16 @@ class RatingControl: UIView {
     
     // MARK: Actions
     
-    func ratingButtonTapped(button: UIButton) {
-        rating = ratingButtons.indexOf(button)! + 1
+    func ratingButtonTapped(_ button: UIButton) {
+        rating = ratingButtons.index(of: button)! + 1
         
         updateButtonSelectionStates()
     }
     
     func updateButtonSelectionStates() {
-        for (index, button) in ratingButtons.enumerate() {
+        for (index, button) in ratingButtons.enumerated() {
             // If the index of a button is less than the rating, that button should be selected.
-            button.selected = index < rating
+            button.isSelected = index < rating
         }
     }
 
@@ -73,7 +73,7 @@ class RatingControl: UIView {
     }
     */
     
-    func setInitRating(rating: Int) {
+    func setInitRating(_ rating: Int) {
         self.rating = rating
         updateButtonSelectionStates()
     }

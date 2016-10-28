@@ -26,17 +26,17 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
     var autocompleteCategories = [String]()
     
     // needed a set otherwise did not change when run on real iPhone 5 at least
-    func setProduct(product: Product) {
+    func setProduct(_ product: Product) {
         self.product = product
     }
     
-    func setCategories(categories: [String]) {
+    func setCategories(_ categories: [String]) {
         self.existingCategories = categories
     }
     
     // MARK: Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if sender === saveButton {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if sender as AnyObject? === saveButton {
             let name = searchTextField.text ?? ""
             let brand = brandTextField.text ?? ""
             let cat = catTextField.text ?? ""
@@ -58,57 +58,57 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
         }
     }
     
-    @IBAction func cancel(sender: UIBarButtonItem) {
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
         let isPresentingInAddMealMode = presentingViewController is UINavigationController
         // if Add mode, it was modal, so close modal, else navigate back
         if isPresentingInAddMealMode {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         else {
-            navigationController!.popViewControllerAnimated(true)
+            navigationController!.popViewController(animated: true)
         }
     }
     
     // MARK: Actions
-    @IBAction func addNewItem(sender: AnyObject) {
+    @IBAction func addNewItem(_ sender: AnyObject) {
         // TODO: NOT IMPLEMENTED YET
         let alertController = UIAlertController(title: "I Love It!", message:
-            "Not implemented yet!", preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
+            "Not implemented yet!", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // MARK: UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         // Disable the Save button while editing.
-        saveButton.enabled = false
+        saveButton.isEnabled = false
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         checkValidProductValues()
-        autocompleteTableView.hidden = true
+        autocompleteTableView.isHidden = true
         if textField == searchTextField {
             navigationItem.title = textField.text
         }
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     {
         
         if textField == catTextField {
             // move the autopopulate list view to just under category and same width
-            let catTextFrame = self.view.convertRect(catTextField.frame, fromView:catTextField.superview)
+            let catTextFrame = self.view.convert(catTextField.frame, from:catTextField.superview)
             autocompleteTableView.frame.origin.y = catTextFrame.origin.y + catTextFrame.height
             autocompleteTableView.frame.origin.x = catTextFrame.origin.x
             autocompleteTableView.frame.size.width = catTextFrame.size.width
             
             // see if we have a match
-            let substring = (catTextField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            let substring = (catTextField.text! as NSString).replacingCharacters(in: range, with: string)
             searchAutocompleteEntriesWithSubstring(substring)
         }
         return true     // not sure about this - could be false
@@ -121,7 +121,7 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
         let cat = catTextField.text ?? ""
         
         let anyEmpty = name.isEmpty || brand.isEmpty || cat.isEmpty
-        saveButton.enabled = !anyEmpty
+        saveButton.isEnabled = !anyEmpty
     }
     
     // MARK: Overrides
@@ -147,8 +147,8 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
         // auto-complete
         autocompleteTableView.delegate = self
         autocompleteTableView.dataSource = self
-        autocompleteTableView.scrollEnabled = true
-        autocompleteTableView.hidden = true
+        autocompleteTableView.isScrollEnabled = true
+        autocompleteTableView.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -159,15 +159,15 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
     // MARK: Auto-complete tableview
     
     // search for match for type-ahaed (right now onlys supports the one field - cat
-    func searchAutocompleteEntriesWithSubstring(substring: String)
+    func searchAutocompleteEntriesWithSubstring(_ substring: String)
     {
-        autocompleteCategories.removeAll(keepCapacity: false)
+        autocompleteCategories.removeAll(keepingCapacity: false)
         
         for curString in existingCategories
         {
-            let myString:NSString! = curString.lowercaseString as NSString
+            let myString:NSString! = curString.lowercased() as NSString
             
-            let substringRange : NSRange! = myString.rangeOfString(substring.lowercaseString)
+            let substringRange : NSRange! = myString.range(of: substring.lowercased())
             
             if (substringRange.location == 0)
             {
@@ -176,28 +176,28 @@ class ProductViewController: UIViewController, UITextFieldDelegate, UITableViewD
         }
         
         // show the autocomplete view if we have a match
-        autocompleteTableView.hidden = autocompleteCategories.count < 1
+        autocompleteTableView.isHidden = autocompleteCategories.count < 1
         autocompleteTableView.reloadData()
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return autocompleteCategories.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let autoCompleteRowIdentifier = "AutoCompleteRowIdentifier"
-        let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier(autoCompleteRowIdentifier, forIndexPath: indexPath) as UITableViewCell
-        let index = indexPath.row as Int
+        let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: autoCompleteRowIdentifier, for: indexPath) as UITableViewCell
+        let index = (indexPath as NSIndexPath).row as Int
         
         cell.textLabel!.text = autocompleteCategories[index]
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedCell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell : UITableViewCell = tableView.cellForRow(at: indexPath)!
         catTextField.text = selectedCell.textLabel!.text
-        autocompleteTableView.hidden = true
+        autocompleteTableView.isHidden = true
     }
 
 }
