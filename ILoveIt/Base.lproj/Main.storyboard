@@ -116,7 +116,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7QU-yQ-Ihk">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7QU-yQ-Ihk">
                                 <frame key="frameInset" minX="20" minY="72" width="343" height="265"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="r3H-cQ-zlj">
@@ -181,10 +181,11 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wuD-kb-zQo">
-                                        <frame key="frameInset" minY="201" width="343" height="64"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wuD-kb-zQo">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="textColor" red="1" green="0.15397702933385382" blue="0.094326863024714491" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="w08-HM-MNe"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -196,12 +197,12 @@
                                     <constraint firstItem="FN5-fS-stU" firstAttribute="top" secondItem="oD6-XT-H19" secondAttribute="bottom" constant="12" id="Age-Nj-moF"/>
                                     <constraint firstItem="oD6-XT-H19" firstAttribute="top" secondItem="r3H-cQ-zlj" secondAttribute="bottom" constant="12" id="CU3-NM-b6r"/>
                                     <constraint firstItem="r3H-cQ-zlj" firstAttribute="leading" secondItem="7QU-yQ-Ihk" secondAttribute="leading" id="JlR-p5-80Z"/>
-                                    <constraint firstItem="wuD-kb-zQo" firstAttribute="leading" secondItem="7QU-yQ-Ihk" secondAttribute="leadingMargin" id="LWc-Th-CgI"/>
                                     <constraint firstAttribute="trailing" secondItem="A91-51-0SC" secondAttribute="trailing" id="QAH-aL-DBO"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="wuD-kb-zQo" secondAttribute="trailing" id="XIy-Hz-vhI"/>
+                                    <constraint firstItem="wuD-kb-zQo" firstAttribute="leading" secondItem="7QU-yQ-Ihk" secondAttribute="leadingMargin" id="cw5-bG-59h"/>
                                     <constraint firstItem="FN5-fS-stU" firstAttribute="leading" secondItem="7QU-yQ-Ihk" secondAttribute="leading" id="h2K-Ic-VFf"/>
                                     <constraint firstItem="A91-51-0SC" firstAttribute="leading" secondItem="7QU-yQ-Ihk" secondAttribute="leading" id="nR4-pB-8bf"/>
                                     <constraint firstAttribute="trailing" secondItem="oD6-XT-H19" secondAttribute="trailing" id="wNv-dJ-gdg"/>
+                                    <constraint firstItem="wuD-kb-zQo" firstAttribute="trailing" secondItem="7QU-yQ-Ihk" secondAttribute="trailingMargin" id="xZh-yV-Iac"/>
                                     <constraint firstItem="r3H-cQ-zlj" firstAttribute="top" secondItem="7QU-yQ-Ihk" secondAttribute="top" id="yVc-sa-JUn"/>
                                     <constraint firstItem="A91-51-0SC" firstAttribute="top" secondItem="FN5-fS-stU" secondAttribute="bottom" constant="12" id="yxP-aY-PIy"/>
                                 </constraints>
